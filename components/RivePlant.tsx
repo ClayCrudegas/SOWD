@@ -1,6 +1,5 @@
 import { View, StyleSheet, Platform, Pressable } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
-import Rive, { RiveRef, Fit, Alignment } from 'rive-react-native';
 
 interface RivePlantProps {
   size?: number;
@@ -17,7 +16,40 @@ export function RivePlant({
   interactive = false,
   variant = 'default'
 }: RivePlantProps) {
-  const riveRef = useRef<RiveRef>(null);
+  if (Platform.OS === 'web') {
+    return <WebPlantFallback size={size} variant={variant} />;
+  }
+
+  return <NativePlant size={size} stateMachine={stateMachine} autoplay={autoplay} interactive={interactive} />;
+}
+
+function WebPlantFallback({ size, variant }: { size: number; variant: 'default' | 'small' | 'large' }) {
+  return (
+    <View style={[styles.container, { width: size, height: size }]}>
+      <View style={[styles.placeholder, getVariantStyles(variant)]}>
+        <View style={styles.stem} />
+        <View style={styles.leaf1} />
+        <View style={styles.leaf2} />
+      </View>
+    </View>
+  );
+}
+
+function NativePlant({
+  size,
+  stateMachine,
+  autoplay,
+  interactive
+}: {
+  size: number;
+  stateMachine: string;
+  autoplay: boolean;
+  interactive: boolean;
+}) {
+  const Rive = require('rive-react-native').default;
+  const { RiveRef, Fit, Alignment } = require('rive-react-native');
+
+  const riveRef = useRef<any>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -31,18 +63,6 @@ export function RivePlant({
       riveRef.current.fireState(stateMachine, 'hover');
     }
   };
-
-  if (Platform.OS === 'web') {
-    return (
-      <View style={[styles.container, { width: size, height: size }]}>
-        <View style={[styles.placeholder, getVariantStyles(variant)]}>
-          <View style={styles.stem} />
-          <View style={styles.leaf1} />
-          <View style={styles.leaf2} />
-        </View>
-      </View>
-    );
-  }
 
   const content = (
     <Rive
