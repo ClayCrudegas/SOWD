@@ -2,8 +2,7 @@ import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui';
-import { Play, Pause, RotateCcw, ArrowLeft } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
+import { Play, Pause, RotateCcw } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
@@ -27,7 +26,6 @@ const BREATH_PATTERNS = [
 ];
 
 export default function BreatheScreen() {
-  const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [selectedPattern, setSelectedPattern] = useState(0);
@@ -193,15 +191,10 @@ export default function BreatheScreen() {
         end={{ x: 1, y: 1 }}>
 
         <View style={styles.header}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ArrowLeft size={24} color="#ffffff" />
-          </Pressable>
-          <View style={styles.headerContent}>
-            <Text style={styles.headerTitle}>Breathe & Meditate</Text>
-            <Text style={styles.headerSubtitle}>
-              Take a moment to center yourself
-            </Text>
-          </View>
+          <Text style={styles.headerTitle}>Breathe & Meditate</Text>
+          <Text style={styles.headerSubtitle}>
+            Take a moment to center yourself
+          </Text>
         </View>
 
         <View style={styles.timerContainer}>
@@ -297,17 +290,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 20,
-    gap: 12,
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerContent: {
-    flex: 1,
     alignItems: 'center',
   },
   headerTitle: {

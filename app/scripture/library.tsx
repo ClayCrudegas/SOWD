@@ -2,8 +2,7 @@ import { View, ScrollView, TextInput, Pressable, StyleSheet, ActivityIndicator, 
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui';
-import { Search, BookOpen, Heart, X, ArrowLeft } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
+import { Search, BookOpen, Heart, X } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { supabase } from '@/lib/supabase';
 import { getItem, storageKeys } from '@/lib/storage';
@@ -75,7 +74,6 @@ const SAMPLE_VERSES = [
 ];
 
 export default function ScriptureLibraryScreen() {
-  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<typeof SAMPLE_VERSES>([]);
   const [loading, setLoading] = useState(false);
@@ -129,16 +127,11 @@ export default function ScriptureLibraryScreen() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}>
         <View style={styles.header}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ArrowLeft size={24} color="#ffffff" />
-          </Pressable>
-          <View style={styles.headerContent}>
-            <BookOpen size={32} color="#ffffff" />
-            <Text style={styles.headerTitle}>Scripture Library</Text>
-            <Text style={styles.headerSubtitle}>
-              Search and save your favorite verses
-            </Text>
-          </View>
+          <BookOpen size={32} color="#ffffff" />
+          <Text style={styles.headerTitle}>Scripture Library</Text>
+          <Text style={styles.headerSubtitle}>
+            Search and save your favorite verses
+          </Text>
         </View>
 
         <View style={styles.searchContainer}>
@@ -251,18 +244,9 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 24,
-    gap: 12,
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerContent: {
-    flex: 1,
     alignItems: 'center',
   },
   headerTitle: {
