@@ -2,11 +2,9 @@ import { View, ScrollView, StyleSheet, Dimensions, Pressable } from 'react-nativ
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui';
-import { Sprout, Flower2, TreeDeciduous, Sparkles, Eye } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
+import { Sprout, Flower2, TreeDeciduous, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { supabase } from '@/lib/supabase';
-import { RivePlant } from '@/components/RivePlant';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -52,7 +50,10 @@ const PlantComponent = ({ index, seed }: { index: number; seed: Seed }) => {
     if (!seed.completed) {
       return <Sprout size={32} color="#94a3b8" />;
     }
-    return <RivePlant size={60} autoplay={true} />;
+    if (seed.type === 'word') {
+      return <Flower2 size={40} color="#f59e0b" />;
+    }
+    return <TreeDeciduous size={44} color="#8b5cf6" />;
   };
 
   const leftPercent = `${(index % 3) * 30 + 10}%` as `${number}%`;
@@ -66,7 +67,6 @@ const PlantComponent = ({ index, seed }: { index: number; seed: Seed }) => {
 };
 
 export default function GardenScreen() {
-  const router = useRouter();
   const [seeds, setSeeds] = useState<Seed[]>([]);
   const [loading, setLoading] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
@@ -135,17 +135,10 @@ export default function GardenScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Text style={styles.title}>Your Spiritual Garden</Text>
-            <Text style={styles.subtitle}>
-              {completedCount} seeds blooming
-            </Text>
-          </View>
-          <Pressable
-            style={styles.showcaseButton}
-            onPress={() => router.push('/garden/plant-showcase' as any)}>
-            <Eye size={20} color="#22c55e" />
-          </Pressable>
+          <Text style={styles.title}>Your Spiritual Garden</Text>
+          <Text style={styles.subtitle}>
+            {completedCount} seeds blooming
+          </Text>
         </View>
 
         <LinearGradient
@@ -248,25 +241,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 16,
-  },
-  headerContent: {
-    flex: 1,
-  },
-  showcaseButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#f0fdf4',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#bbf7d0',
   },
   title: {
     fontSize: 32,

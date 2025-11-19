@@ -2,7 +2,7 @@ import { View, ScrollView, Pressable, StyleSheet, Switch, TextInput, Alert } fro
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui';
-import { Bell, Plus, Trash2 } from 'lucide-react-native';
+import { Bell, Plus, Trash2, ArrowLeft } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { getItem, storageKeys } from '@/lib/storage';
@@ -156,10 +156,15 @@ export default function RemindersScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Prayer Reminders</Text>
-        <Text style={styles.headerSubtitle}>
-          Set daily reminders for your prayer time
-        </Text>
+        <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <ArrowLeft size={24} color="#111827" />
+        </Pressable>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Prayer Reminders</Text>
+          <Text style={styles.headerSubtitle}>
+            Set daily reminders for your prayer time
+          </Text>
+        </View>
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -283,11 +288,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9fafb',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 20,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    gap: 16,
+  },
+  backButton: {
+    padding: 4,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: 28,

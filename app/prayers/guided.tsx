@@ -141,7 +141,7 @@ export default function GuidedPrayersScreen() {
           end={{ x: 1, y: 1 }}>
 
           <View style={styles.prayerHeader}>
-            <Pressable onPress={handleBack} style={styles.backButton}>
+            <Pressable onPress={handleBack} style={styles.prayerBackButton}>
               <ArrowLeft size={24} color="#ffffff" />
             </Pressable>
             <View style={styles.progressInfo}>
@@ -217,11 +217,16 @@ export default function GuidedPrayersScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <BookHeart size={32} color="#ec4899" />
-        <Text style={styles.headerTitle}>Guided Prayers</Text>
-        <Text style={styles.headerSubtitle}>
-          Follow prompts to deepen your prayer life
-        </Text>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <ArrowLeft size={24} color="#ec4899" />
+        </Pressable>
+        <View style={styles.headerContent}>
+          <BookHeart size={32} color="#ec4899" />
+          <Text style={styles.headerTitle}>Guided Prayers</Text>
+          <Text style={styles.headerSubtitle}>
+            Follow prompts to deepen your prayer life
+          </Text>
+        </View>
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -284,13 +289,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 24,
-    alignItems: 'center',
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    gap: 12,
+  },
+  backButton: {
+    padding: 4,
+  },
+  headerContent: {
+    flex: 1,
+    alignItems: 'center',
   },
   headerTitle: {
     fontSize: 28,
@@ -388,7 +402,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 16,
   },
-  backButton: {
+  prayerBackButton: {
     width: 40,
     height: 40,
     alignItems: 'center',
